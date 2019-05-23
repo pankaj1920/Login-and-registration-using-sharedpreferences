@@ -15,37 +15,42 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        final EditText login_name_edittext = (EditText)findViewById(R.id.login_name);
-        final EditText login_password_edittext = (EditText)findViewById(R.id.login_password);
-        Button login = (Button)findViewById(R.id.login);
-        Button rigester = (Button)findViewById(R.id.rigester);
 
-        SharedPreferences preferences =getSharedPreferences("MY_PREF",MODE_PRIVATE);
-        Boolean isloggedin = preferences.getBoolean("IsLoggedIn",false);
+        final EditText login_name_edittext = (EditText) findViewById(R.id.login_name);
+        final EditText login_password_edittext = (EditText) findViewById(R.id.login_password);
+        Button login = (Button) findViewById(R.id.login);
+        Button rigester = (Button) findViewById(R.id.rigester);
+
+        final SharedPreferences preferences = getSharedPreferences("MY_PREF", MODE_PRIVATE);
+        final Boolean isloggedin = preferences.getBoolean("IsLoggedIn", false);
 
         //if user is logged in the when he open the app he should directly go to home page
-        if(isloggedin)
-        {
+        if (isloggedin) {
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
         }
 
-        final String Requried_Password = preferences.getString("PASSWORD","Default_password");
-        final String Requrid_name = preferences.getString("NAME","Default_name");
+        //Retrieving Data(we use preferences.getString)
+        final String Requried_Password = preferences.getString("PASSWORD", "Default_password");
+        final String Requrid_name = preferences.getString("NAME", "Default_name");
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String login_name = login_name_edittext.getText().toString();
-                String login_password= login_password_edittext.getText().toString();
-                
-                if (login_name.equals(Requrid_name)&&login_password.equals(Requried_Password)){
-                    
-                    Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                String login_password = login_password_edittext.getText().toString();
+
+                if (login_name.equals(Requrid_name) && login_password.equals(Requried_Password)) {
+
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putBoolean("IsLoggedIn", true);
+                    editor.commit();
+
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();
-                }else {
+                } else {
                     Toast.makeText(LoginActivity.this, "Email or Password Wrong", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -55,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
         rigester.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this,Register.class);
+                Intent intent = new Intent(LoginActivity.this, Register.class);
                 startActivity(intent);
                 finish();
             }

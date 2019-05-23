@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class Register extends AppCompatActivity {
 
@@ -23,17 +24,22 @@ public class Register extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                //Converting Input data to string
                 String name = rigester_name.getText().toString();
                 String password = rigester_password.getText().toString();
                 String email = rigester_email.getText().toString();
 
                 SharedPreferences preferences = getSharedPreferences("MY_PREF", MODE_PRIVATE);
                 SharedPreferences.Editor editor = preferences.edit();
+
+                //storing data
                 editor.putString("NAME", name);
                 editor.putString("PASSWORD", password);
                 editor.putString("EMAIL", email);
-                editor.putBoolean("IsLoggedIn",true);
+                //editor.putBoolean("IsLoggedIn",true);
                 editor.commit();
+
+                Toast.makeText(Register.this, "Rigestered", Toast.LENGTH_SHORT).show();
 
                 //After Registering send user to login screen
                 Intent intent = new Intent(Register.this, LoginActivity.class);
